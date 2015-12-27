@@ -44,14 +44,12 @@ $total = $response->totalCount;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <style>
-        .carousel-inner > .item > img,
-        .carousel-inner > .item > a > img {
-            width: 70%;
-            margin: auto;
-        }
+        .carousel-inner .active.left { left: -20%; }
+        .carousel-inner .next        { left:  20%; }
+        .carousel-control.left,.carousel-control.right {background-image:none;}
+
+        .col-lg-2 {width: 20%;}
     </style>
-
-
 </head>
 <body>
 
@@ -70,24 +68,26 @@ $total = $response->totalCount;
                     if($i == 0) {
                         ?>
                         <div class="item active">
-                            <iframe width="100%" height="500px" src=<?php echo $response->entries[$i]->contents[0]->url ?> frameborder="0" allowfullscreen=""></iframe>
+                            <div class="col-lg-2">
+                                <iframe width="200px" height="500px" src=<?php echo $response->entries[$i]->contents[0]->url ?> frameborder="0" allowfullscreen=""></iframe>
 
-                            <div class="carousel-caption">
-                                <h3><?php echo $i.'TH SLIDE'?></h3>
-                                <p><?php echo $i.'TH SLIDE'?></p>
+                                <div class="carousel-caption">
+                                    <h3><?php echo $i.'TH SLIDE'?></h3>
+                                    <p><?php echo $i.'TH SLIDE'?></p>
+                                </div>
                             </div>
-
                         </div>
                     <?php
                     }
                     else {
                         ?>
                         <div class="item">
-
-                            <iframe width="100%" height="500px" src=<?php echo $response->entries[$i]->contents[0]->url ?> frameborder="0" allowfullscreen=""></iframe>
-                            <div class="carousel-caption">
-                                <h3><?php echo $i.'TH SLIDE'?></h3>
-                                <p><?php echo $i.'TH SLIDE'?></p>
+                            <div class="col-lg-2">
+                                <iframe width="200px" height="500px" src=<?php echo $response->entries[$i]->contents[0]->url ?> frameborder="0" allowfullscreen=""></iframe>
+                                <div class="carousel-caption">
+                                    <h3><?php echo $i.'TH SLIDE'?></h3>
+                                    <p><?php echo $i.'TH SLIDE'?></p>
+                                </div>
                             </div>
 
                         </div>
@@ -97,10 +97,32 @@ $total = $response->totalCount;
                 ?>
 
             </div>
-            <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
         </div>
     </div>
 </div>
+<script>
+    $('#myCarousel').carousel({
+        interval: 4000
+    })
+
+    $('.carousel .item').each(function(){
+        var next = $(this).next();
+        if (!next.length) {
+            next = $(this).siblings(':first');
+        }
+        next.children(':first-child').clone().appendTo($(this));
+
+        for (var i=0;i<3;i++) {
+            next=next.next();
+            if (!next.length) {
+                next = $(this).siblings(':first');
+            }
+
+            next.children(':first-child').clone().appendTo($(this));
+        }
+    });
+</script>
 </body>
 </html>
